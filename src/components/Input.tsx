@@ -1,8 +1,14 @@
 import { ArrowUpIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Input() {
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+
+  function handleClick() {
+    navigate("/chat");
+  }
 
   return (
     <div className="relative w-full">
@@ -14,6 +20,7 @@ export default function Input() {
       />
       <button
         type="submit"
+        onClick={handleClick}
         disabled={message.length < 3}
         className={`${
           message.length < 3
