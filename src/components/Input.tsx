@@ -13,8 +13,10 @@ export default function Input() {
   return (
     <div className="relative w-full">
       <input
+        type="text"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handleClick()}
         placeholder="Message Rivo"
         className="pl-4 pr-12 py-3 rounded-lg placeholder:text-gray-400 w-full bg-[#404045] outline-none text-white focus:ring-2 focus:ring-blue-500 transition-all"
       />

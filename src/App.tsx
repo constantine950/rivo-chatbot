@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AppLayout from "./page/AppLayout";
-import ChatPage from "./page/chatPage";
+import ChatPage from "./page/ChatPage";
 import NotFoundPage from "./page/NotFoundPage";
 import HomePage from "./page/HomePage";
 
