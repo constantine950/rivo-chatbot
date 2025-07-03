@@ -17,6 +17,7 @@ interface ContextValue {
   setMessages: Dispatch<SetStateAction<Message[]>>;
   isLoading: boolean;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
+  handleSendMessage: (messageText: string) => Promise<void>;
 }
 
 export const AppContext = createContext<ContextValue | undefined>(undefined);

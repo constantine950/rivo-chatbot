@@ -1,12 +1,15 @@
 import { ArrowUpIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/useAppContext";
 
 export default function Input() {
+  const { handleSendMessage, isLoading } = useAppContext();
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   function handleClick() {
+    handleSendMessage(message);
     navigate("/chat");
   }
 
@@ -23,9 +26,9 @@ export default function Input() {
       <button
         type="submit"
         onClick={handleClick}
-        disabled={message.length < 3}
+        disabled={message.length < 3 || isLoading}
         className={`${
-          message.length < 3
+          message.length < 3 || isLoading
             ? "cursor-not-allowed bg-gray-400 text-[#404045]"
             : "cursor-pointer bg-blue-500 text-white"
         } absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2 hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500`}
