@@ -2,9 +2,8 @@ import { useRef, useEffect } from "react";
 import Input from "../components/Input";
 import { useAppContext } from "../context/useAppContext";
 
-const ChatUI = () => {
+export default function ChatUI() {
   const { messages } = useAppContext();
-
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when messages update
@@ -14,11 +13,12 @@ const ChatUI = () => {
 
   return (
     <div className="flex flex-col h-screen pt-17">
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      {/* Messages container - centered */}
+      <div className="flex-1 overflow-y-auto flex flex-col items-center p-4 space-y-4 w-full max-w-4xl mx-auto">
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`flex ${
+            className={`w-full flex ${
               message.isUser ? "justify-end" : "justify-start"
             }`}
           >
@@ -31,12 +31,16 @@ const ChatUI = () => {
             >
               {message.isLoading ? (
                 <div className="flex space-x-2">
-                  <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"></div>
-                  <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce delay-100"></div>
-                  <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce delay-200"></div>
+                  {[...Array(3)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"
+                      style={{ animationDelay: `${i * 100}ms` }}
+                    />
+                  ))}
                 </div>
               ) : (
-                message.text
+                <p className="break-words">{message.text}</p>
               )}
             </div>
           </div>
@@ -44,9 +48,10 @@ const ChatUI = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      <Input />
+      {/* Input area - centered */}
+      <div className="p-4 w-full max-w-4xl mx-auto">
+        <Input />
+      </div>
     </div>
   );
-};
-
-export default ChatUI;
+}
