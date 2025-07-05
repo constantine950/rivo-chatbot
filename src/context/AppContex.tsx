@@ -80,9 +80,7 @@ export default function AppProvider({ children }: ChildrenProp) {
 
   const value = {
     messages,
-    setMessages,
     isLoading,
-    setIsLoading,
     handleSendMessage,
   };
 

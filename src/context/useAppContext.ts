@@ -1,9 +1,4 @@
-import {
-  createContext,
-  useContext,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import { createContext, useContext } from "react";
 
 type Message = {
   id: number;
@@ -14,9 +9,7 @@ type Message = {
 
 interface ContextValue {
   messages: Message[];
-  setMessages: Dispatch<SetStateAction<Message[]>>;
   isLoading: boolean;
-  setIsLoading: Dispatch<SetStateAction<boolean>>;
   handleSendMessage: (messageText: string) => Promise<void>;
 }
 
