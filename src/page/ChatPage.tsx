@@ -1,23 +1,55 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import Input from "../components/Input";
 import { useAppContext } from "../context/useAppContext";
 
 export default function ChatUI() {
   const { messages } = useAppContext();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isUserScrolling, setIsUserScrolling] = useState(false);
+  const scrollTimeoutRef = useRef<number | null>(null);
 
-  // Auto-scroll to bottom when messages update
+  // Track user scroll behavior
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
+    const container = messagesEndRef.current?.parentElement;
+    if (!container) return;
+
+    const handleScroll = () => {
+      setIsUserScrolling(true);
+      if (scrollTimeoutRef.current) {
+        window.clearTimeout(scrollTimeoutRef.current);
+      }
+      scrollTimeoutRef.current = window.setTimeout(() => {
+        setIsUserScrolling(false);
+      }, 1000);
+    };
+
+    container.addEventListener("scroll", handleScroll);
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+      if (scrollTimeoutRef.current) {
+        window.clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isUserScrolling) return;
+
+    const scrollElement = messagesEndRef.current;
+    if (!scrollElement) return;
+
+    const frame = requestAnimationFrame(() => {
+      scrollElement.scrollIntoView({
+        behavior: "auto",
+        block: "end",
+      });
     });
-  }, [messages]);
+
+    return () => cancelAnimationFrame(frame);
+  }, [messages, isUserScrolling]);
 
   return (
     <div className="flex flex-col h-[calc(100vh-73px)]">
-      {" "}
-      {/* Full height minus header */}
       {/* Messages container */}
       <div className="flex-1 overflow-y-auto pb-4">
         <div className="flex flex-col items-center p-4 space-y-4 w-full max-w-4xl mx-auto">
@@ -51,7 +83,7 @@ export default function ChatUI() {
               </div>
             </div>
           ))}
-          <div ref={messagesEndRef} className="h-4" /> {/* Spacer element */}
+          <div ref={messagesEndRef} className="h-4" />
         </div>
       </div>
       {/* Input area */}
