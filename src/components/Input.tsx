@@ -29,9 +29,8 @@ export default function Input() {
       />
       <button
         type="submit"
-        onClick={handleSubmit}
         disabled={message.trim().length < 1 || isLoading}
-        className={`absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+        className={`absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2 transition-colors ${
           message.trim().length < 1 || isLoading
             ? "cursor-not-allowed bg-gray-400 text-[#404045]"
             : "cursor-pointer bg-blue-500 text-white hover:bg-blue-600"

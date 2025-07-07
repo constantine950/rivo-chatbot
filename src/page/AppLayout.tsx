@@ -4,13 +4,11 @@ import Header from "../components/Header";
 export default function AppLayout() {
   return (
     <div className="bg-[#292A2D] h-screen">
-      <div className="mx-auto">
-        <Header />
-
-        <main>
-          <Outlet />
-        </main>
-      </div>
+      <Header />
+      <main className="h-full pt-[73px]">
+        {/* Account for fixed header */}
+        <Outlet />
+      </main>
     </div>
   );
 }
