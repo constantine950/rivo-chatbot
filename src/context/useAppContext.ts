@@ -11,6 +11,7 @@ interface ContextValue {
   messages: Message[];
   isLoading: boolean;
   handleSendMessage: (messageText: string) => Promise<void>;
+  handleResetMsg: () => void;
 }
 
 export const AppContext = createContext<ContextValue | undefined>(undefined);

@@ -78,9 +78,14 @@ export default function AppProvider({ children }: ChildrenProp) {
     }
   };
 
+  function handleResetMsg() {
+    setMessages(initialstate);
+  }
+
   const value = {
     messages,
     isLoading,
+    handleResetMsg,
     handleSendMessage,
   };
 

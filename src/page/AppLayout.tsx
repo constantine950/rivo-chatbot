@@ -6,7 +6,6 @@ export default function AppLayout() {
     <div className="bg-[#292A2D] h-screen">
       <Header />
       <main className="h-full pt-[73px]">
-        {/* Account for fixed header */}
         <Outlet />
       </main>
     </div>
