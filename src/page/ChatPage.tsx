@@ -8,7 +8,7 @@ export default function ChatUI() {
   const [isUserScrolling, setIsUserScrolling] = useState(false);
   const scrollTimeoutRef = useRef<number | null>(null);
 
-  // Track user scroll behavior
+  // Scroll behavior
   useEffect(() => {
     const container = messagesEndRef.current?.parentElement;
     if (!container) return;
@@ -48,6 +48,45 @@ export default function ChatUI() {
     return () => cancelAnimationFrame(frame);
   }, [messages, isUserScrolling]);
 
+  // Format message content with consistent styling
+  const formatMessageContent = (text: string): { __html: string } => {
+    if (!text) return { __html: "" };
+
+    const html = text
+      .replace(/^# (.*$)/gm, '<h1 class="text-xl font-bold mt-4 mb-2">$1</h1>')
+      .replace(
+        /^## (.*$)/gm,
+        '<h2 class="text-lg font-semibold mt-3 mb-1">$1</h2>'
+      )
+      .replace(
+        /^### (.*$)/gm,
+        '<h3 class="text-base font-medium mt-2 mb-1">$1</h3>'
+      )
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
+      .replace(
+        /`(.*?)`/g,
+        '<code class="bg-[#292A2D] text-gray-300 px-1.5 py-0.5 rounded text-sm font-mono">$1</code>'
+      )
+      .replace(
+        /```([\s\S]*?)```/g,
+        '<pre class="bg-[#292A2D] text-gray-300 p-3 rounded-md overflow-x-auto my-2"><code>$1</code></pre>'
+      )
+      .replace(/- (.*$)/gm, '<li class="ml-4 list-disc">$1</li>')
+      .replace(/\n\n/g, '</p><p class="mt-2">')
+      .replace(
+        /\[(.*?)\]\((.*?)\)/g,
+        '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline">$1</a>'
+      );
+
+    const withLists = html.replace(
+      /(<li.*?>.*?<\/li>)+/gs,
+      '<ul class="pl-5 space-y-1 my-2">$&</ul>'
+    );
+
+    return { __html: withLists };
+  };
+
   return (
     <div className="flex flex-col h-[calc(100vh-73px)]">
       {/* Messages container */}
@@ -78,7 +117,10 @@ export default function ChatUI() {
                     ))}
                   </div>
                 ) : (
-                  <p className="break-words">{message.text}</p>
+                  <div
+                    className="break-words"
+                    dangerouslySetInnerHTML={formatMessageContent(message.text)}
+                  />
                 )}
               </div>
             </div>
